@@ -42,9 +42,13 @@ inline void search_crc_suffix(char *buff,
                               const char *suffix,
                               size_t suffix_len,
                               typename enable_if<(numChars == currentChar)>::type * = 0) {
+  // This final hash is fixed, based on what the prefix hash is
+  // TODO: figure out the appropriate hash for what will be correct for a given suffix
+  // This means that the suffix can basically be dropped, reducing the crc-bytes
+  // to exactly the number of characters we're brute forcing
   uint32_t finalHash = crc_str(prefixCRC, suffix, suffix_len);
   if (finalHash == TARGET_HASH) {
-    printf("Match: %u, %s\n", prefixCRC, buff);
+    printf("Match: %x, %s\n", prefixCRC, buff);
   }
 }
 
