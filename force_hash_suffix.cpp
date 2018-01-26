@@ -51,7 +51,7 @@ inline void search_crc(char *buff,
 }
 
 template<size_t numChars>
-inline void search_crc_prefix_suffix() {
+inline void search_crc_prefix() {
   uint32_t prefixCRC = crc_str<PREFIX, PREFIX_LEN>(DEFAULT_CRC);
   char buff[numChars + 1];
   memset(buff, 0, numChars + 1);
@@ -65,7 +65,7 @@ template<size_t len>
 void execLen() {
   using Clock = high_resolution_clock;
   auto start = Clock::now();
-  search_crc_prefix_suffix<len>();
+  search_crc_prefix<len>();
   size_t total = static_cast<size_t>(pow((size_t) TEST_CHAR_LEN, len));
   auto end = steady_clock::now();
   auto diff = end - start;
