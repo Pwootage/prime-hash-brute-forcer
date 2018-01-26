@@ -51,4 +51,26 @@ const uint32_t crc_table[] = {
   0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
+inline uint32_t update_crc(uint32_t crc, uint8_t c) {
+  const uint32_t lookup = (crc ^ c) & 0xFF;
+  return (crc >> 8) ^ crc_table[lookup];
+}
+
+template <const char* str, size_t str_len>
+inline uint32_t crc_str(uint32_t initial) {
+  uint32_t crc = initial;
+  for (size_t i = 0; i < str_len; i++) {
+    crc = update_crc(crc, static_cast<uint8_t>(str[i]));
+  }
+  return crc;
+}
+
+inline uint32_t crc_str(uint32_t initial, const char* str, size_t str_len) {
+  uint32_t crc = initial;
+  for (size_t i = 0; i < str_len; i++) {
+    crc = update_crc(crc, static_cast<uint8_t>(str[i]));
+  }
+  return crc;
+}
+
 #endif //HASH_BRUTE_FORCE_CRC32_HPP
